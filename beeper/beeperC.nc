@@ -95,13 +95,13 @@ implementation
                     break;
                 }
                 count++;
-                call Mts300Sounder.beep(10);
-                btrpkt->nodeid = TOS_NODE_ID;
-                if (!busy) {
-                    if (call AMSend.send(3, &pkt, sizeof(hophophopMsg)) == SUCCESS){
-                        busy = TRUE;
-                    }
-                }
+                call Mts300Sounder.beep(50);
+//                btrpkt->nodeid = TOS_NODE_ID;
+//                if (!busy) {
+//                    if (call AMSend.send(3, &pkt, sizeof(hophophopMsg)) == SUCCESS){
+//                        busy = TRUE;
+//                    }
+//                }
             }
         }
         return msg;

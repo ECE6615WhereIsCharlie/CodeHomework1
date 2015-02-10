@@ -61,7 +61,7 @@ module lightsensorC
 implementation
 {
     // sampling frequency in binary milliseconds
-    #define SAMPLING_FREQUENCY 500
+    #define SAMPLING_FREQUENCY 1000
     message_t pkt;
     bool busy = FALSE;
 
@@ -87,7 +87,7 @@ implementation
                 btrpkt->nodeid = TOS_NODE_ID;
                 btrpkt->data = data;
 
-                if (call AMSend.send(2, &pkt, sizeof(hophophopMsg)) == SUCCESS)
+                if (call AMSend.send(AM_BROADCAST_ADDR, &pkt, sizeof(hophophopMsg)) == SUCCESS)
                     busy = TRUE;
             }
         }
