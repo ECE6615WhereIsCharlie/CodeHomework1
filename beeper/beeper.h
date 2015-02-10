@@ -1,5 +1,5 @@
-#ifndef HOPHOPHOP_H
-#define HOPHOPHOP_H
+#ifndef BEEPER_H
+#define BEEPER_H
 
 enum {
   AM_BLINKTORADIO = 6,
@@ -12,5 +12,6 @@ typedef nx_struct hophophopMsg {
  // nx_uint16_t pktid;
   nx_uint16_t data;
 } hophophopMsg;
+
 
 #endif

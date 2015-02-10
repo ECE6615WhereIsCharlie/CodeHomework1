@@ -34,34 +34,33 @@
  */
 
 /**
- * 
+ *
  * Sensing demo application. See README.txt file in this directory for usage
  * instructions and have a look at tinyos-2.x/doc/html/tutorial/lesson5.html
  * for a general tutorial on sensing in TinyOS.
- * 
+ *
  * @author Jan Hauer
  */
 
-#include "hophophop.h"
+#include "lightsensor.h"
 
-configuration hophophopAppC 
-{ 
-} 
-implementation { 
+configuration lightsensorAppC
+{
+}
+implementation {
 
   components ActiveMessageC;
   components new AMSenderC(AM_BLINKTORADIO);
   components new AMReceiverC(AM_BLINKTORADIO);
+  components lightsensorC, MainC, LedsC,  SounderC, new TimerMilliC(), new DemoSensorC() as Hop;
 
-  components hophophopC, MainC, LedsC,  SounderC, new TimerMilliC(), new DemoSensorC() as Hop;
-  
-  hophophopC.Boot -> MainC;
-  hophophopC.Leds -> LedsC;
-  hophophopC.Timer -> TimerMilliC;
-  hophophopC.Read -> Hop;
-  hophophopC.Packet -> AMSenderC;
-  hophophopC.AMPacket -> AMSenderC;
-  hophophopC.AMControl -> ActiveMessageC;
-  hophophopC.AMSend -> AMSenderC;
-  hophophopC.Receive -> AMReceiverC;
+  lightsensorC.Boot -> MainC;
+  lightsensorC.Leds -> LedsC;
+  lightsensorC.Timer -> TimerMilliC;
+  lightsensorC.Read -> Hop;
+  lightsensorC.Packet -> AMSenderC;
+  lightsensorC.AMPacket -> AMSenderC;
+  lightsensorC.AMControl -> ActiveMessageC;
+  lightsensorC.AMSend -> AMSenderC;
+  lightsensorC.Receive -> AMReceiverC;
 }

@@ -1,4 +1,4 @@
-COMPONENT=hophophopAppC
+COMPONENT=beeperAppC
 CFLAGS+= -I%T/sensoboards/mts300/ -DMTS300CA
 PFLAGS += -DCC1K_DEF_FREQ=2435000000
 

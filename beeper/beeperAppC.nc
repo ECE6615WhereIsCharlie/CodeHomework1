@@ -42,24 +42,23 @@
  * @author Jan Hauer
  */
 
-#include "hophophop.h"
-configuration hophophopAppC 
-{ 
-} 
-implementation { 
+#include "beeper.h"
+configuration beeperAppC
+{
+}
+implementation {
 
   components ActiveMessageC;
   components new AMSenderC(AM_BLINKTORADIO);
   components new AMReceiverC(AM_BLINKTORADIO);
+  components beeperC, MainC, LedsC,  SounderC;
 
-  components hophophopC, MainC, LedsC,  SounderC;
-  
-  hophophopC.Boot -> MainC;
-  hophophopC.Leds -> LedsC;
-  hophophopC.Mts300Sounder -> SounderC;
-  hophophopC.Packet -> AMSenderC;
-  hophophopC.AMPacket -> AMSenderC;
-  hophophopC.AMControl -> ActiveMessageC;
-  hophophopC.AMSend -> AMSenderC;
-  hophophopC.Receive -> AMReceiverC;
+  beeperC.Boot -> MainC;
+  beeperC.Leds -> LedsC;
+  beeperC.Mts300Sounder -> SounderC;
+  beeperC.Packet -> AMSenderC;
+  beeperC.AMPacket -> AMSenderC;
+  beeperC.AMControl -> ActiveMessageC;
+  beeperC.AMSend -> AMSenderC;
+  beeperC.Receive -> AMReceiverC;
 }

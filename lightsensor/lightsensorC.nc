@@ -34,8 +34,8 @@
  */
 
 /**
- * 
- * 
+ *
+ *
 ing demo application. See README.txt file in this directory for usage
  * instructions and have a look at tinyos-2.x/doc/html/tutorial/lesson5.html
  * for a general tutorial on sensing in TinyOS.
@@ -45,7 +45,7 @@ ing demo application. See README.txt file in this directory for usage
 
 #include "Timer.h"
 
-module hophophopC
+module lightsensorC
 {
   uses interface Boot;
   uses interface Leds;
@@ -60,61 +60,56 @@ module hophophopC
 }
 implementation
 {
-  // sampling frequency in binary milliseconds
-  #define SAMPLING_FREQUENCY 500
-  message_t pkt;
-  bool busy = FALSE;
-  
-  event void Boot.booted() {
-    call Timer.startPeriodic(SAMPLING_FREQUENCY);
-    call AMControl.start();
-  }
+    // sampling frequency in binary milliseconds
+    #define SAMPLING_FREQUENCY 500
+    message_t pkt;
+    bool busy = FALSE;
 
-  event void Timer.fired() 
-  {
-    call Read.read();
-  }
-
-
-
-  event void Read.readDone(error_t result, uint16_t data) 
-  {
-   call Leds.led0On();
-    
-    if(data <600 ){
-      call Leds.led2On();
-      if (!busy) {
-
-        hophophopMsg* btrpkt = (hophophopMsg*)(call Packet.getPayload(&pkt, sizeof(hophophopMsg)));
-  call Leds.led1On();
-        if (btrpkt == NULL) 
-	        return;
-        
-        btrpkt->nodeid = TOS_NODE_ID;
-        btrpkt->data = data;
-
-        if (call AMSend.send(2, &pkt, sizeof(hophophopMsg)) == SUCCESS) 
-          busy = TRUE;
-        
-      }
+    event void Boot.booted() {
+        call Timer.startPeriodic(SAMPLING_FREQUENCY);
+        call AMControl.start();
     }
-  }
 
-  event void AMSend.sendDone(message_t* msg, error_t err) {
-  call Leds.led2Off();
-  call Leds.led1Off();
-    if (&pkt == msg) 
-      busy = FALSE;
-    
-  }
+    event void Timer.fired(){
+        call Read.read();
+    }
 
-  event void AMControl.startDone(error_t err) {
-  }
 
-  event void AMControl.stopDone(error_t err) {
-  }
 
-  event message_t* Receive.receive(message_t* msg, void* payload, uint8_t len){
-  return NULL;
-  }
+    event void Read.readDone(error_t result, uint16_t data){
+        call Leds.led0On();
+
+        if(data <600 ){
+            call Leds.led2On();
+            if (!busy) {
+                hophophopMsg* btrpkt = (hophophopMsg*)(call Packet.getPayload(&pkt, sizeof(hophophopMsg)));
+                call Leds.led1On();
+                if (btrpkt == NULL)
+                    return;
+
+                btrpkt->nodeid = TOS_NODE_ID;
+                btrpkt->data = data;
+
+                if (call AMSend.send(2, &pkt, sizeof(hophophopMsg)) == SUCCESS)
+                    busy = TRUE;
+            }
+        }
+    }
+
+    event void AMSend.sendDone(message_t* msg, error_t err) {
+        call Leds.led2Off();
+        call Leds.led1Off();
+        if (&pkt == msg)
+            busy = FALSE;
+    }
+
+    event void AMControl.startDone(error_t err) {
+    }
+
+    event void AMControl.stopDone(error_t err) {
+    }
+
+    event message_t* Receive.receive(message_t* msg, void* payload, uint8_t len){
+        return NULL;
+    }
 }
