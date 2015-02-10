@@ -74,11 +74,8 @@ implementation
         call Read.read();
     }
 
-
-
     event void Read.readDone(error_t result, uint16_t data){
         call Leds.led0On();
-
         if(data <600 ){
             call Leds.led2On();
             if (!busy) {

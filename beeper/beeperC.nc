@@ -62,8 +62,6 @@ implementation
     uint16_t count;
     bool busy = FALSE;
     message_t pkt;
-    // sampling frequency in binary milliseconds
-    #define SAMPLING_FREQUENCY 100
 
     event void Boot.booted() {
         call AMControl.start();
@@ -71,13 +69,10 @@ implementation
     }
 
     event message_t* Receive.receive(message_t* msg, void* payload, uint8_t len){
-
         if (len == sizeof(hophophopMsg)) {
             hophophopMsg* btrpkt = (hophophopMsg*)payload;
-            if(btrpkt->nodeid == 1)
-            {
-                switch(count)
-                {
+            if(btrpkt->nodeid == 1){
+                switch(count){
                     case 4:
                     call Leds.led1On();
                     call Leds.led2Off();
@@ -117,7 +112,6 @@ implementation
 
     event void AMControl.stopDone(error_t err) {
     }
-
 
     event void AMSend.sendDone(message_t* msg, error_t err) {
         if (&pkt == msg){
