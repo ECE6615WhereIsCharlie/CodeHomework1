@@ -34,89 +34,24 @@
  */
 
 /**
- *
+ * 
  * Sensing demo application. See README.txt file in this directory for usage
  * instructions and have a look at tinyos-2.x/doc/html/tutorial/lesson5.html
  * for a general tutorial on sensing in TinyOS.
- *
+ * 
  * @author Jan Hauer
  */
 
-#include "Timer.h"
-
-module beeperC
-{
-  uses {
-    interface Boot;
-    interface Leds;
-    interface Mts300Sounder;
-    interface Packet;
-    interface AMPacket;
-    interface AMSend;
-    interface Receive;
-    interface SplitControl as AMControl;
-  }
+configuration SenseAppC 
+{ 
+} 
+implementation { 
+  
+  components SenseC, MainC, LedsC,  SounderC, new TimerMilliC(), new DemoSensorC() as Sensor;
+  
+  SenseC.Boot -> MainC;
+  SenseC.Leds -> LedsC;
+  SenseC.Timer -> TimerMilliC;
+  SenseC.Read -> Sensor;
+  SenseC.Mts300Sounder -> SounderC;
 }
-implementation
-{
-    uint16_t count;
-    bool busy = FALSE;
-    message_t pkt;
-
-    event void Boot.booted() {
-        call AMControl.start();
-        call Leds.led0On();
-    }
-
-    event message_t* Receive.receive(message_t* msg, void* payload, uint8_t len){
-        if (len == sizeof(hophophopMsg)) {
-            hophophopMsg* btrpkt = (hophophopMsg*)payload;
-            if(btrpkt->nodeid == TOS_NODE_ID +1){
-                switch(count){
-                    case 4:
-                    call Leds.led1On();
-                    call Leds.led2Off();
-                    break;
-
-                    case 1:
-                    call Leds.led1On();
-                    call Leds.led2On();
-                    break;
-
-                    case 2:
-                    call Leds.led2On();
-                    call Leds.led1Off();
-                    break;
-
-                    case 3:
-                    call Leds.led1Off();
-                    call Leds.led2Off();
-                    count = 0;
-                    break;
-                }
-                count++;
-                call Mts300Sounder.beep(50);
-//                btrpkt->nodeid = TOS_NODE_ID;
-//                if (!busy) {
-//                    if (call AMSend.send(3, &pkt, sizeof(hophophopMsg)) == SUCCESS){
-//                        busy = TRUE;
-//                    }
-//                }
-            }
-        }
-        return msg;
-    }
-
-    event void AMControl.startDone(error_t err) {
-    }
-
-    event void AMControl.stopDone(error_t err) {
-    }
-
-    event void AMSend.sendDone(message_t* msg, error_t err) {
-        if (&pkt == msg){
-            busy = FALSE;
-        }
-    }
-}
-

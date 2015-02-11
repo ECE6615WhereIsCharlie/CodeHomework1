@@ -44,7 +44,7 @@
 
 #include "Timer.h"
 
-module beeperC
+module relayC
 {
   uses {
     interface Boot;
@@ -95,13 +95,12 @@ implementation
                     break;
                 }
                 count++;
-                call Mts300Sounder.beep(50);
-//                btrpkt->nodeid = TOS_NODE_ID;
-//                if (!busy) {
-//                    if (call AMSend.send(3, &pkt, sizeof(hophophopMsg)) == SUCCESS){
-//                        busy = TRUE;
-//                    }
-//                }
+                btrpkt->nodeid = TOS_NODE_ID;
+                if (!busy) {
+                    if (call AMSend.send(AM_BROADCAST_ADDR, &pkt, sizeof(hophophopMsg)) == SUCCESS){
+                        busy = TRUE;
+                    }
+                }
             }
         }
         return msg;

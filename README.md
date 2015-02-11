@@ -1,13 +1,11 @@
-# Test1
-Changes:
-- Test with 1s between each packet send
-- Put back BROADCAST address
-- Test with only 2 nodes :
-    * sensor sending package
-    * beeper receiving specific packet ID
+# Test2
+Changes(compared to test1):
+- Added a relay node
+- Use TOS_NODE_ID +1 as nodeid expected in the message
 
 Build instructions
 ==================
 
-- lightsensor should be built with ID 1
-- ID doesn't matter for beeper
+- lightsensor should be built with ID 3
+- relay should be programmed with ID 2
+- beeper should be programmed with ID 1
